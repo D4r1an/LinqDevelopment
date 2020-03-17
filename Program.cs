@@ -34,6 +34,14 @@ namespace LinqDevelopment
                 new Employee { Id = 4, Name = "Tom", Email = "Tom@gmail.com", Programming = new List<string> {"C#", "PHP", "Linq", "Java"}},
             };
 
+            var mixtedData = new List<object>()
+            {
+                new Employee { Id = 1, Name = "Harry", Email = "Harry@gmail.com", Programming = new List<string> {"PHP", "Linq", "C#"}},
+                new Employee { Id = 1, Name = "Tom", Email = "Tom@gmail.com", Programming = new List<string> { } },
+                1,2,3,4,54,
+                "Tom", "Darian", "Anna", "Alba"
+            };
+
 
             var basicQuery = (from emp in employees
                              select emp.Id).ToList();
@@ -53,6 +61,15 @@ namespace LinqDevelopment
                                         from skill in emp.Programming
                                         select skill).ToList();
 
+            var querySintaxWhere = (from emp in datasource
+                                    where emp.Programming.Contains("PHP") && emp.Programming.Contains("Linq")
+                                    orderby emp.Id
+                                    select emp.Name).ToList();
+
+            var queryTypeOf = (from d in mixtedData
+                              where d is int
+                              select d);
+
 
             var selectMethod = employees.Select(emp => new Student { Id = emp.Id }).ToList();
 
@@ -61,6 +78,8 @@ namespace LinqDevelopment
             var selectIndexAnonymous = employees.Select((emp, index) => new { Index = index, Name = emp.Name }).ToList();
 
             var methodSyntax = datasource.SelectMany(emp => emp.Programming).ToList();
+
+            var methodTypeOf = mixtedData.OfType<Employee>().Where(d => d.Programming.Count != 0).ToList();
 
         }
     }
